@@ -3,7 +3,7 @@
 Pi 的两行状态脚注：第一行 cwd / git 分支 / session 名，第二行模型、思考等级、token 用量、缓存命中率、成本和上下文占用。
 
 ```text
-~/Workspace/project/pi/status-footer (main) • 迁移 footer
+~/Workspace/project/pi/pi-status-footer (main) • 迁移 footer
 (opencode-go) deepseek-v4.1-flash • high ↑12.3k ↓4.2k R89k W1.2k CH92.4% $0.034 18.7%/128k (auto)
 ```
 
@@ -18,7 +18,7 @@ pi install npm:@efrencode/pi-status-footer
 本地开发时可直接指向项目目录：
 
 ```sh
-pi install ~/Workspace/project/pi/status-footer
+pi install ~/Workspace/project/pi/pi-status-footer
 ```
 
 ## 配置
