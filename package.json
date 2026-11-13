@@ -16,7 +16,6 @@
     "package-lock.json"
   ],
   "scripts": {
-    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "pack:check": "npm pack --dry-run"
   },
@@ -29,7 +28,6 @@
     "@earendil-works/pi-coding-agent": "1.5.0",
     "@earendil-works/pi-tui": "1.5.0",
     "@types/node": "^22.19.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.0"
+    "typescript": "^5.9.3"
   }
 }
