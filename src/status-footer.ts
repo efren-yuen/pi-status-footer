@@ -2,6 +2,10 @@ import { isAbsolute, relative, resolve, sep } from "node:path";
 import type { ExtensionAPI, SessionEntry, Theme } from "@earendil-works/pi-coding-agent";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 
+/** 上下文占用占窗口的百分比：达到警告线转黄，提醒考虑 compact；达到危险线转红，建议开新会话。 */
+const CONTEXT_WARN_PERCENT = 60;
+const CONTEXT_DANGER_PERCENT = 85;
+
 type UsageTotals = {
 	input: number;
 	output: number;
@@ -187,10 +191,19 @@ export default function statusFooter(pi: ExtensionAPI): void {
 
 					const contextWindow = contextUsage?.contextWindow ?? ctx.model?.contextWindow ?? 0;
 					const contextPercent = contextUsage?.percent;
-					const contextText = metric(
-						contextPercent === null || contextPercent === undefined
-							? `?/${formatTokens(contextWindow)}`
-							: `${contextPercent.toFixed(1)}%/${formatTokens(contextWindow)}`,
+					const contextKnown = contextPercent !== null && contextPercent !== undefined;
+					// 只按窗口百分比分级，换模型自动适配；用量未知（如刚压缩完）时维持次要色。
+					const contextColor =
+						contextKnown && contextPercent >= CONTEXT_DANGER_PERCENT
+							? "error"
+							: contextKnown && contextPercent >= CONTEXT_WARN_PERCENT
+								? "warning"
+								: "dim";
+					const contextText = theme.fg(
+						contextColor,
+						contextKnown
+							? `${contextPercent.toFixed(1)}%/${formatTokens(contextWindow)}`
+							: `?/${formatTokens(contextWindow)}`,
 					);
 					// 先为上下文留位；窄屏省略 provider，再截模型，最后按空间添加次要指标。
 					const modelWidth = Math.max(0, width - visibleWidth(contextText) - 1);

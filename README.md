@@ -12,6 +12,7 @@ Pi 的状态脚注：默认两行，第一行 cwd / git 分支 / session 名，�
 - 累计整个会话（含其他分支）的 assistant、toolResult、独立 usage、压缩和分支摘要用量。
 - 统计和上下文用量在会话、条目、分支或模型变化时重算，重复重绘复用缓存。
 - CH 使用最后一条 assistant 的缓存读取占提示 token 的比例；仅有缓存读写用量且该比例可计算时显示。
+- 上下文占用按窗口百分比分级着色：低于 60% 用次要色，60% 起转黄（提醒考虑 compact），85% 起转红（建议开新会话）；用量未知时仍显示 `?/窗口` 并维持次要色。
 - 窄终端优先保留模型与上下文，省略 provider、截短过长模型，再按空间显示次要指标；不显示自动压缩标记。
 - 有 `setStatus()` 状态时追加第三行，按 key 排序并合并为单行，保留 ANSI 配色，超宽截断；无状态不加空行。
 
@@ -29,7 +30,12 @@ pi install ~/Workspace/project/pi/pi-status-footer
 
 ## 配置
 
-无配置项，非 TUI 模式不注册。
+无配置项，非 TUI 模式不注册。上下文分级的两条阈值是源码顶部常量：
+
+```ts
+const CONTEXT_WARN_PERCENT = 60;
+const CONTEXT_DANGER_PERCENT = 85;
+```
 
 ## 开发
 
